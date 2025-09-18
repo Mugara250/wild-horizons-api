@@ -1,0 +1,20 @@
+{
+  "name": "wild-horizons-api",
+  "version": "1.0.0",
+  "description": "a dataset for the world's most interesting places",
+  "homepage": "https://github.com/Mugara250/wild-horizons-api#readme",
+  "bugs": {
+    "url": "https://github.com/Mugara250/wild-horizons-api/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mugara250/wild-horizons-api.git"
+  },
+  "license": "ISC",
+  "author": "Mushi Mbonyumugara",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js"
+  }
+}
