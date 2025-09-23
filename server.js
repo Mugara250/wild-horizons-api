@@ -7,8 +7,15 @@ import { getDataByPathParams } from "./utils/getDataByPathParams.js";
 const server = http.createServer(async (request, response) => {
   // data
   const destinations = await getDataFromDB();
-  if (request.url === "/api" && request.method === "GET") {
-    sendJSONResponse(response, 200, destinations);
+
+  // obtaining the query params object
+  const urlObj = new URL(request.url, `http://${request.headers.host}`);
+  const queryParamsObj = Object.fromEntries(urlObj.searchParams);
+
+  if (urlObj.pathname === "/api"  && request.method === "GET") {
+    let filteredDestinations = destinations;
+    console.log(queryParamsObj);
+    sendJSONResponse(response, 200, filteredDestinations);
   } else if (
     request.url.startsWith("/api/continent") &&
     request.method === "GET"
