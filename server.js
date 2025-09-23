@@ -2,6 +2,7 @@ import http from "node:http";
 import { getDataFromDB } from "./database/db.js";
 import { sendJSONResponse } from "./utils/sendJSONResponse.js";
 import { getDataByPathParams } from "./utils/getDataByPathParams.js";
+import { getDataByQueryParams } from "./utils/getDataByQueryParams.js";
 
 // server creation
 const server = http.createServer(async (request, response) => {
@@ -12,9 +13,12 @@ const server = http.createServer(async (request, response) => {
   const urlObj = new URL(request.url, `http://${request.headers.host}`);
   const queryParamsObj = Object.fromEntries(urlObj.searchParams);
 
-  if (urlObj.pathname === "/api"  && request.method === "GET") {
+  if (urlObj.pathname === "/api" && request.method === "GET") {
     let filteredDestinations = destinations;
-    console.log(queryParamsObj);
+    filteredDestinations = getDataByQueryParams(
+      queryParamsObj,
+      filteredDestinations
+    );
     sendJSONResponse(response, 200, filteredDestinations);
   } else if (
     request.url.startsWith("/api/continent") &&
@@ -22,9 +26,16 @@ const server = http.createServer(async (request, response) => {
   ) {
     // const continent = request.url.slice(request.url.lastIndexOf("/") + 1); // OR
     const continent = request.url.split("/").pop();
-    const continentData = getDataByPathParams(destinations, "continent", continent); 
+    const continentData = getDataByPathParams(
+      destinations,
+      "continent",
+      continent
+    );
     sendJSONResponse(response, 200, continentData);
-  } else if (request.url.startsWith("/api/country") && request.method === "GET") {
+  } else if (
+    request.url.startsWith("/api/country") &&
+    request.method === "GET"
+  ) {
     const country = request.url.split("/").pop();
     const countryData = getDataByPathParams(destinations, "country", country);
     sendJSONResponse(response, 200, countryData);
